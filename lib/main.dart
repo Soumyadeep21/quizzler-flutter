@@ -28,9 +28,23 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-
   List<Icon> scoreKeeper = [];
-  int questionNumber = 0;
+
+  void checkAnswer(bool userPickedAnswer) {
+    setState(() {
+      if (quizBrain.getAnswer() == userPickedAnswer)
+        scoreKeeper.add(Icon(
+          Icons.check,
+          color: Colors.green,
+        ));
+      else
+        scoreKeeper.add(Icon(
+          Icons.close,
+          color: Colors.red,
+        ));
+      quizBrain.nextQuestion();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +58,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                quizBrain.questionList[questionNumber].questionText,
+                quizBrain.getQuestion(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -69,13 +83,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked true.
-                if(quizBrain.questionList[questionNumber].questionAnswer == true)
-                 print("Correct");
-                else
-                  print("Wrong");
-                setState(() {
-                 questionNumber++; 
-                });
+                checkAnswer(true);
               },
             ),
           ),
@@ -94,19 +102,16 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
-                if(quizBrain.questionList[questionNumber].questionAnswer == false)
-                 print("Correct");
-                else
-                  print("Wrong");
-                setState(() {
-                 questionNumber++; 
-                });
+                checkAnswer(false);
               },
             ),
           ),
         ),
-        Row(
-          children: scoreKeeper,
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: scoreKeeper,
+          ),
         )
       ],
     );
