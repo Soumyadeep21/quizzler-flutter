@@ -37,9 +37,16 @@ class QuizBrain{
   bool getAnswer(){
     return _questionList[_questionNumber].questionAnswer;
   }
-  void nextQuestion(){
-    if(_questionNumber<_questionList.length - 1)
+  bool nextQuestion(){
+    if(_questionNumber<_questionList.length - 1){
       _questionNumber++;
+      return true;
+    }
+    return false;
   }
+  void reset(){
+    _questionNumber = 0;
+  }
+  
 
 }
