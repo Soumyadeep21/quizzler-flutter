@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 QuizBrain quizBrain = QuizBrain();
 
@@ -42,7 +43,15 @@ class _QuizPageState extends State<QuizPage> {
           Icons.close,
           color: Colors.red,
         ));
-      quizBrain.nextQuestion();
+      if (!quizBrain.nextQuestion()) {
+        Alert(
+                context: context,
+                title: "Finished!",
+                desc: "You've reached the end of the quiz. ")
+            .show();
+        quizBrain.reset();
+        scoreKeeper.removeRange(0, scoreKeeper.length);
+      }
     });
   }
 
